@@ -1,7 +1,5 @@
 from random import uniform as rd
-import matplotlib.pyplot as plt
-
-
+#import matplotlib.pyplot as plt
 
 class Atom():
     """
@@ -52,7 +50,12 @@ class Layer():
     
     --'help() -> Muestra las funcionalidades de eesta clase'
     """
-    def __init__(self,epsilon=0 , r_cond=0,zlayer=0):
+    def __init__(self,epsilon=0 , r_cond=0,zlayer=0, xcond0=0,xcon1=1,ycond0=0,ycon1=1):
+        self.x0=xcond0
+        self.x1=xcon1
+        self.y0=ycond0
+        self.y1=ycon1
+        
         self.z_min=zlayer-epsilon
         self.z_max=zlayer+epsilon
         self.rcond=r_cond
@@ -60,12 +63,12 @@ class Layer():
         self.dominio=[]
         pass
 
-    def create_layer(self,n=0,name:str="NONE"):
+    def create_layer(self,n,name:str):
         i=0
         while(i<n):
-            x=rd(0,1)
+            x=rd(self.x0,self.x1)
             x=round(x,7)
-            y=rd(0,1)
+            y=rd(self.y0,self.y1)
             y=round(y,7)
             z=rd(self.z_min,self.z_max) #Esto es debido a la logica de que el las capas tendran un zlayer que indica donde se encuentra la capa
             z=round(z,7)
@@ -80,6 +83,7 @@ class Layer():
                     break
             if(lugar):
                 self.dominio.append(Atom(x,y,z,name))
+                self.dominio.append(Atom(x,y,-z,name))             #quitar esto si no lo quieres simetrico   
                 i=i+1
 
     def show_layer(self):
@@ -101,46 +105,36 @@ def entry_layer(wlayer:Layer,file:str):
     zlayer=0
     cont=0
     for i in b:
-        i=i.split()
+        if(i[0]==''):
+            cont+=1
+        i=i.split(sep='\t')
         print(i)
-        x=float(i[0])
-        y=float(i[1])
-        z=float(i[2])
-        atomtp=i[3]
+        x=float(i[1])
+        y=float(i[2])
+        z=float(i[3])
+        atomtp=i[4]
         temp=Atom(x,y,z,atomtp=atomtp)
-        zlayer=zlayer+float(i[1+cont])
+        zlayer=zlayer+float(i[2+cont])
         wlayer.dominio.append(temp)
         cont=0
     wlayer.zlayer=zlayer/len(b)
 
-def graph(args,colors=None):
+def graph(args):
 
     fig = plt.figure()
     ax = fig.add_subplot(projection='3d')
-    if colors is None:
-        colors = ['b', 'g']  # Lista de colores por defecto
-    
+
     for i in args:
         xset=[]
         yset=[]
         zset=[]
-        xset1=[]
-        yset1=[]
-        zset1=[]
         for j in i.dominio:
             tem_pos=j.pos()
-            color=j.atomtype()
-            if(color=='1'):
-                color='c'
-                xset.append(tem_pos[0])
-                yset.append(tem_pos[1])
-                zset.append(tem_pos[2])
-            else:
-                xset1.append(tem_pos[0])
-                yset1.append(tem_pos[1])
-                zset1.append(tem_pos[2])
-        ax.scatter(xset, yset, zset, marker='o', color='b', s=600)
-        ax.scatter(xset1, yset1, zset1, marker='o', color='r', s= 200)
+            xset.append(tem_pos[0])
+            yset.append(tem_pos[1])
+            zset.append(tem_pos[2])
+        ax.scatter(xset, yset, zset, marker='o',)
+    
     
     ax.set_xlabel('X Label')
     ax.set_ylabel('Y Label')
@@ -149,12 +143,12 @@ def graph(args,colors=None):
     plt.show()
 
 def outfile(args,file):
-    f=open(file,"a+")
+    f=open(file,"w+")
     for i in args:
         for j in i.dominio:
             tem_pos=j.pos()
             tipo=j.atomtype()
-            f.write("{}\t{}\t{}\t{}\n".format((tem_pos[0]),(tem_pos[1]),(tem_pos[2]),tipo))
+            f.writelines("\n\t{}\t{}\t{}\t{}".format((tem_pos[0]),(tem_pos[1]),(tem_pos[2]),tipo))
     f.close()
     
 
@@ -172,5 +166,4 @@ class Solid():
 
 if(__name__=="__main__"):
     print("Created by int-64 \nMailto carlosr301101@gmail.com")
-
 
