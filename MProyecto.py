@@ -20,7 +20,7 @@ Layer.help()
 #La variable {solid} es una lista de Layers y es el tipo de parametros que esperan las funciones [graph] y [outfile]
 solid=[]
 a=Layer(0.5,0.1,0.19)
-a.create_layer(2,"wc")
+a.create_layer()
 entry_layer(a,"data.txt")
 solid.append(a)
 graph(solid)

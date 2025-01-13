@@ -1,0 +1,43 @@
+SystemLabel bcc_a1_w
+
+LatticeConstant		2.757 Ang
+%block LatticeParameters
+	MM	MM	MM	109.4666667	109.4666667	109.4666667
+%endblock LatticeParameters
+
+#%block LatticeVectors
+#	 0.5000000	 0.5000000	-0.5000000
+#	-0.5000000	 0.5000000	 0.5000000
+#	 0.5000000	-0.5000000	 0.5000000
+#%endblock LatticeVectors
+
+NumberOfSpecies		1
+%block ChemicalSpeciesLabel
+		1	74	W.pbe
+%endblock ChemicalSpeciesLabel
+
+NumberOfAtoms			1
+AtomicCoordinatesFormat		Fractional
+%block AtomicCoordinatesAndAtomicSpecies
+	0.0000000	0.0000000	0.0000000	1
+%endblock AtomicCoordinatesAndAtomicSpecies
+
+
+# PARA ESTE CALCULO NO SE NECESITA TANTO NIVEL DE PRECISION
+
+MeshCutoff COFF Ry
+
+%block kgrid_Monkhorst_Pack
+	KK	0	0	0.0
+	0	KK	0	0.0
+	0	0	KK	0.0
+%endblock kgrid_Monkhorst_Pack
+
+PAO.EnergyShift			0.0031 Ry	#0.02 Ry
+PAO.SplitNorm			0.052		#0.15
+PAO.BasisSize			DZP		#SZ / DZ / SZP / [ DZP ]
+
+XC.functional			GGA		#LDA / GGA / VDW
+XC.authors			PBE		#PBE / revPBE / RPBE / WC / PBEsol / (for vdW) DRSLL / LMKLL / KBM / C09 / BH / VV
+
+ElectronicTemperature		300 K

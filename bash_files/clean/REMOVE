@@ -1,0 +1,8 @@
+#!/bin/bash
+#Cleaning the directories
+for j in *; do
+	case $j in 
+		*.out|*.psf|C.vdw.inp|*.fdf|*submit*|README|REMOVE) continue;;
+		*) rm -r $j;;
+	esac
+done

@@ -2,7 +2,7 @@ from random import uniform as rd
 import matplotlib.pyplot as plt
 
 
-#starting
+
 class Atom():
     """
     Esta clase guarda la pocision de los atomos\n
@@ -52,7 +52,7 @@ class Layer():
     
     --'help() -> Muestra las funcionalidades de eesta clase'
     """
-    def __init__(self,epsilon=0 , r_cond=0,zlayer=0.0):
+    def __init__(self,epsilon=0 , r_cond=0,zlayer=0):
         self.z_min=zlayer-epsilon
         self.z_max=zlayer+epsilon
         self.rcond=r_cond
@@ -60,12 +60,15 @@ class Layer():
         self.dominio=[]
         pass
 
-    def create_layer(self,n,name:str):
+    def create_layer(self,n=0,name:str="NONE"):
         i=0
         while(i<n):
             x=rd(0,1)
+            x=round(x,7)
             y=rd(0,1)
+            y=round(y,7)
             z=rd(self.z_min,self.z_max) #Esto es debido a la logica de que el las capas tendran un zlayer que indica donde se encuentra la capa
+            z=round(z,7)
             lugar=True
             
             
@@ -98,29 +101,46 @@ def entry_layer(wlayer:Layer,file:str):
     zlayer=0
     cont=0
     for i in b:
-        i=i.split(" ")
-        
-        temp=Atom(float(i[0]),float(i[1]),float(i[2]),atomtp=i[3])
-        zlayer=zlayer+float(i[2])
+        i=i.split()
+        print(i)
+        x=float(i[0])
+        y=float(i[1])
+        z=float(i[2])
+        atomtp=i[3]
+        temp=Atom(x,y,z,atomtp=atomtp)
+        zlayer=zlayer+float(i[1+cont])
         wlayer.dominio.append(temp)
+        cont=0
     wlayer.zlayer=zlayer/len(b)
 
-def graph(args):
+def graph(args,colors=None):
 
     fig = plt.figure()
     ax = fig.add_subplot(projection='3d')
-
+    if colors is None:
+        colors = ['b', 'g']  # Lista de colores por defecto
+    
     for i in args:
         xset=[]
         yset=[]
         zset=[]
+        xset1=[]
+        yset1=[]
+        zset1=[]
         for j in i.dominio:
             tem_pos=j.pos()
-            xset.append(tem_pos[0])
-            yset.append(tem_pos[1])
-            zset.append(tem_pos[2])
-        ax.scatter(xset, yset, zset, marker='o',)
-    
+            color=j.atomtype()
+            if(color=='1'):
+                color='c'
+                xset.append(tem_pos[0])
+                yset.append(tem_pos[1])
+                zset.append(tem_pos[2])
+            else:
+                xset1.append(tem_pos[0])
+                yset1.append(tem_pos[1])
+                zset1.append(tem_pos[2])
+        ax.scatter(xset, yset, zset, marker='o', color='b', s=600)
+        ax.scatter(xset1, yset1, zset1, marker='o', color='r', s= 200)
     
     ax.set_xlabel('X Label')
     ax.set_ylabel('Y Label')
@@ -130,12 +150,11 @@ def graph(args):
 
 def outfile(args,file):
     f=open(file,"a+")
-    f.write("Xpos\tYpos\tZpos\tSpecies\t\n")
     for i in args:
         for j in i.dominio:
             tem_pos=j.pos()
             tipo=j.atomtype()
-            f.write("{:.5f}\t{:.5s}\t{:.5s}\t{}\n".format(float(tem_pos[0]),float(tem_pos[1]),float(tem_pos[2]),tipo))
+            f.write("{}\t{}\t{}\t{}\n".format((tem_pos[0]),(tem_pos[1]),(tem_pos[2]),tipo))
     f.close()
     
 
