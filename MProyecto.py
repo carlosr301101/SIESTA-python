@@ -16,7 +16,6 @@ graph(solid)
 outfile(solid,"salida.out")
 
 """
-Layer.help()
 #La variable {solid} es una lista de Layers y es el tipo de parametros que esperan las funciones [graph] y [outfile]
 solid=[]
 a=Layer(0.5,0.1,0.19)
