@@ -119,23 +119,35 @@ def entry_layer(wlayer:Layer,file:str):
         cont=0
     wlayer.zlayer=zlayer/len(b)
 
-def graph(args):
+def graph(args,colors=None):
 
     fig = plt.figure()
     ax = fig.add_subplot(projection='3d')
-
+    if colors is None:
+        colors = ['b', 'g']  # Lista de colores por defecto
+    
     for i in args:
         xset=[]
         yset=[]
         zset=[]
+        xset1=[]
+        yset1=[]
+        zset1=[]
         for j in i.dominio:
             tem_pos=j.pos()
-            xset.append(tem_pos[0])
-            yset.append(tem_pos[1])
-            zset.append(tem_pos[2])
-        ax.scatter(xset, yset, zset, marker='o',)
-    
-    
+            color=j.atomtype()
+            if(color=='1'):
+                color='c'
+                xset.append(tem_pos[0])
+                yset.append(tem_pos[1])
+                zset.append(tem_pos[2])
+            else:
+                xset1.append(tem_pos[0])
+                yset1.append(tem_pos[1])
+                zset1.append(tem_pos[2])
+        ax.scatter(xset, yset, zset, marker='o', color='b', s=600)
+        ax.scatter(xset1, yset1, zset1, marker='o', color='r', s= 200)
+      
     ax.set_xlabel('X Label')
     ax.set_ylabel('Y Label')
     ax.set_zlabel('Z Label')
@@ -148,7 +160,7 @@ def outfile(args,file):
         for j in i.dominio:
             tem_pos=j.pos()
             tipo=j.atomtype()
-            f.writelines("\n\t{}\t{}\t{}\t{}".format((tem_pos[0]),(tem_pos[1]),(tem_pos[2]),tipo))
+            f.write("{}\t{}\t{}\t{}\n".format((tem_pos[0]),(tem_pos[1]),(tem_pos[2]),tipo))
     f.close()
     
 
