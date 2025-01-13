@@ -2,7 +2,7 @@ from random import uniform as rd
 import matplotlib.pyplot as plt
 
 
-
+#starting
 class Atom():
     """
     Esta clase guarda la pocision de los atomos\n
