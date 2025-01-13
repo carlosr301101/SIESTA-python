@@ -32,9 +32,7 @@ for ((j=1;j<10;j+=1)); do
 	mkdir ${folder}
 
 #Esta seccion cambia el fichero de entrada
-	cd ./MProyecto 
-	python MProyecto.py
-	cd ..
+	python automat.py
 	python modif.py
 	cat salida.out >> listpos.out
 ##########################################
