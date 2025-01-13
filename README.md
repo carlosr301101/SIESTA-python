@@ -1,11 +1,12 @@
-###
+# 
 This project use python as a tool for SIESTA .fdf files, aiming to create, modify and graph atomic structures.
-###
+
 ##
 Uses a python package "AtomClass" wichone allow create some kind of atomic structure like , Solid and Layers, with few paramaters like interatomic distance and randomize those positions (x,y,z)
-##
-Different classes
+###
+1. Different classes
   ---------
+
       class Atom():
           def __init__(self,xcord:float,ycord:float,zcord:float,atomtp="None"):
               self.x=xcord
@@ -84,3 +85,5 @@ Different classes
         def help():
             print(Layer.__doc__)
   -------
+###
+Also has functions for reading data in plain txt format and grap with matplotlib
